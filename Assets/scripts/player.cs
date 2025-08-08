@@ -3,22 +3,34 @@ using UnityEngine.InputSystem;
 
 public class player : MonoBehaviour
 {
-    private Vector3 input;
+    private Vector2 move_input;
     private Rigidbody rb;
+    private PlayerInputActions player_input;
+    [SerializeField] float speed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        player_input = new PlayerInputActions();
+        player_input.Enable();
+        player_input.player.collect.performed += collect_object;
+    }
+ 
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        move_input = player_input.player.move.ReadValue<Vector2>();
+
+        Vector3 direction = new Vector3(move_input.x, 0f, move_input.y);
+
+        if (direction.sqrMagnitude > 1f)
+            direction.Normalize();
+
+        rb.linearVelocity = direction * speed;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        input = new Vector3(Input.GetAxisRaw("Horizontal"), 0f, Input.GetAxisRaw("Vertical"));
-        rb.linearVelocity += input;
-    }
-    public void collect(InputAction.CallbackContext context)
+    public void collect_object(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
