@@ -1,0 +1,34 @@
+{
+    "name": "player",
+    "maps": [
+        {
+            "name": "player",
+            "id": "b5ddbd31-8bfb-42b9-b8f2-7916b23f98a7",
+            "actions": [
+                {
+                    "name": "collect",
+                    "type": "Button",
+                    "id": "9a749f80-bf35-444a-96d5-953867339956",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dfb7ecfc-e201-49aa-a829-45c76600155c",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "collect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
