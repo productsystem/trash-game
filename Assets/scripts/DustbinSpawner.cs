@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Wave
 {
     public GameObject dustbinPrefab;
@@ -56,6 +57,8 @@ public class DustbinSpawner : MonoBehaviour
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
             GameObject d = Instantiate(wave.dustbinPrefab, spawnPoint.position, Quaternion.identity);
             aliveDustbins.Add(d);
+            Dustbin.BinType randType = (Dustbin.BinType)Random.Range(0, System.Enum.GetValues(typeof(Dustbin.BinType)).Length);
+            d.GetComponent<Dustbin>().SetBinType(randType);
             //remove
             StartCoroutine(NullCheck(d));
             yield return new WaitForSeconds(wave.spawnInterval);

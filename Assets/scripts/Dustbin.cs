@@ -44,6 +44,23 @@ public class Dustbin : MonoBehaviour
     public void SetBinType(BinType type)
     {
         binType = type;
+        Color currColor = Color.white;
+        switch (type)
+        {
+            case BinType.Blue:
+                currColor = Color.blue;
+                break;
+            case BinType.Green:
+                currColor = Color.green;
+                break;
+            case BinType.Red:
+                currColor = Color.red;
+                break;
+            case BinType.Yellow:
+                currColor = Color.yellow;
+                break;
+        }
+        GetComponent<Renderer>().material.color = currColor;
     }
 
     public void Damage(int damage)
