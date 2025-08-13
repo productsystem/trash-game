@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Dustbin : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Dustbin : MonoBehaviour
     }
     [SerializeField] private float speed = 3f;
     [SerializeField] private float eps = 5f;
+    [SerializeField] private int maxHealth = 1;
+    private int currHealth;
 
     private Rigidbody rb;
     private Transform player;
@@ -21,6 +24,7 @@ public class Dustbin : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        currHealth = maxHealth;
     }
     //hi
 
@@ -40,5 +44,14 @@ public class Dustbin : MonoBehaviour
     public void SetBinType(BinType type)
     {
         binType = type;
+    }
+
+    public void Damage(int damage)
+    {
+        currHealth -= damage;
+        if (currHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }

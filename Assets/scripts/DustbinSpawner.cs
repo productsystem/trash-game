@@ -57,7 +57,20 @@ public class DustbinSpawner : MonoBehaviour
             GameObject d = Instantiate(wave.dustbinPrefab, spawnPoint.position, Quaternion.identity);
             aliveDustbins.Add(d);
             //remove
+            StartCoroutine(NullCheck(d));
             yield return new WaitForSeconds(wave.spawnInterval);
+        }
+    }
+
+    IEnumerator NullCheck(GameObject dustbin)
+    {
+        yield return new WaitUntil(() => dustbin == null);
+        for (int i = aliveDustbins.Count - 1; i >= 0; i--)
+        {
+            if (aliveDustbins[i] == null)
+            {
+                aliveDustbins.RemoveAt(i);
+            }
         }
     }
 
