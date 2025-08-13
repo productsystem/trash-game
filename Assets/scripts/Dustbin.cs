@@ -1,66 +1,75 @@
-using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Dustbin : MonoBehaviour
 {
     public enum BinType
     {
-        Blue,
-        Green,
-        Red,
-        Yellow,
+        Basic,
+        ColorChanger
     }
+
     [SerializeField] private float speed = 3f;
     [SerializeField] private float eps = 5f;
     [SerializeField] private int maxHealth = 1;
+    [SerializeField] private float colorChangeInterval = 2f;
     private int currHealth;
 
     private Rigidbody rb;
     private Transform player;
+    private float colorTimer;
+
     public BinType binType { get; private set; }
+    private Renderer rend;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        rend = GetComponent<Renderer>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         currHealth = maxHealth;
+
+        if (binType == BinType.Basic)
+        {
+            rend.material.color = GetRandomColor();
+        }
+        else if (binType == BinType.ColorChanger)
+        {
+            rend.material.color = GetRandomColor();
+            colorTimer = colorChangeInterval;
+        }
     }
-    //hi
 
     void FixedUpdate()
     {
         Vector3 dir = player.position - transform.position;
         dir.y = 0;
-        // Debug.Log(dir.magnitude + " " + eps);
+
         if (dir.magnitude > eps)
-        {
             rb.linearVelocity = dir.normalized * speed;
-        }
         else
             rb.linearVelocity = Vector3.zero;
+
+        if (binType == BinType.ColorChanger)
+        {
+            colorTimer -= Time.fixedDeltaTime;
+            if (colorTimer <= 0f)
+            {
+                rend.material.color = GetRandomColor();
+                colorTimer = colorChangeInterval;
+            }
+        }
     }
 
     public void SetBinType(BinType type)
     {
         binType = type;
-        Color currColor = Color.white;
-        switch (type)
-        {
-            case BinType.Blue:
-                currColor = Color.blue;
-                break;
-            case BinType.Green:
-                currColor = Color.green;
-                break;
-            case BinType.Red:
-                currColor = Color.red;
-                break;
-            case BinType.Yellow:
-                currColor = Color.yellow;
-                break;
-        }
-        GetComponent<Renderer>().material.color = currColor;
+    }
+
+    private Color GetRandomColor()
+    {
+        Color[] colors = { Color.red, Color.blue, Color.green, Color.yellow };
+        return colors[Random.Range(0, colors.Length)];
+
     }
 
     public void Damage(int damage)
@@ -70,5 +79,6 @@ public class Dustbin : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        //ok
     }
 }

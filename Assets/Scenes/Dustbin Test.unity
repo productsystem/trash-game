@@ -287,14 +287,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ca53054f48a4149aea7b42ddace874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dustbinPrefab: {fileID: 6573896298471152806, guid: e2a4b46704e72eb47b4298254656b66a, type: 3}
   spawnPoints:
   - {fileID: 1224982550}
   - {fileID: 165867607}
   - {fileID: 1816910021}
   - {fileID: 1881154271}
-  spawnTime: 3
-  spawnMultiplier: 0.9
+  timeForWaves: 5
+  waves:
+  - dustbinPrefab: {fileID: 6573896298471152806, guid: e2a4b46704e72eb47b4298254656b66a, type: 3}
+    dustbinCount: 5
+    spawnInterval: 1
 --- !u!4 &943996219
 Transform:
   m_ObjectHideFlags: 0
