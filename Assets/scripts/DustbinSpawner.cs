@@ -1,30 +1,63 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+public class Wave
+{
+    public GameObject dustbinPrefab;
+    public int dustbinCount = 5;
+    public float spawnInterval = 1f;
+}
 
 public class DustbinSpawner : MonoBehaviour
 {
-    public GameObject dustbinPrefab;
     [SerializeField] private Transform[] spawnPoints;
-    [SerializeField] private float spawnTime;
-    [SerializeField] private float spawnMultiplier;
+    [SerializeField] private float timeForWaves = 5f;
 
-    private float timeElapsed;
-    private float enemyCount;
+    public Wave[] waves;
+
+    private int currWave = 0;
+    private List<GameObject> aliveDustbins = new List<GameObject>();
+    private bool isWaveOn = false;
 
     void Start()
     {
-        timeElapsed = spawnTime - 1f;
+        StartCoroutine(WaveSpawner());
     }
 
     void Update()
     {
-        timeElapsed += Time.deltaTime;
-        if (timeElapsed >= spawnTime)
+        if (isWaveOn && aliveDustbins.Count == 0)
+        {
+            isWaveOn = false;
+            currWave++;
+            if (currWave < waves.Length)
+            {
+                StartCoroutine(WaveSpawner());
+            }
+            else
+            {
+                //complete
+            }
+        }
+    }
+
+    IEnumerator WaveSpawner()
+    {
+        yield return new WaitForSeconds(timeForWaves);
+        StartCoroutine(SpawnWave(waves[currWave]));
+    }
+
+    IEnumerator SpawnWave(Wave wave)
+    {
+        isWaveOn = true;
+        for (int i = 0; i < wave.dustbinCount; i++)
         {
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            GameObject currBin = Instantiate(dustbinPrefab, spawnPoint.position, Quaternion.identity);
-            timeElapsed = 0f;
-            if(spawnTime >= 0.5f)
-            spawnTime *= spawnMultiplier;
+            GameObject d = Instantiate(wave.dustbinPrefab, spawnPoint.position, Quaternion.identity);
+            aliveDustbins.Add(d);
+            //remove
+            yield return new WaitForSeconds(wave.spawnInterval);
         }
     }
 
