@@ -22,6 +22,7 @@ public class Dustbin : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
+    //hi
 
     void FixedUpdate()
     {
