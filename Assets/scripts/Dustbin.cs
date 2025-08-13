@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dustbin : MonoBehaviour
@@ -63,6 +64,14 @@ public class Dustbin : MonoBehaviour
     public void SetBinType(BinType type)
     {
         binType = type;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.tag == GetComponent<Renderer>().material.color.ToString())
+        {
+            Damage(1);
+        }
     }
 
     private Color GetRandomColor()
